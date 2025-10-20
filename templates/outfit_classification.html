@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outfit classification</title>
+</head>
+<body>
+    <h1>chose an image that you want to classify</h1>
+    <form action="/classify_outfit" method="post" enctype="multipart/form-data">
+        <input type="file" name="outfit_image" accept="image/*" required>
+        <input type="submit" value="Classify Outfit">
+    </form>
+    
+    
+</body>
+</html>

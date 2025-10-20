@@ -3,8 +3,13 @@
 
 from flask import Flask, render_template, request
 import os
+import logging
+
 
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'))   
+
+logging.basicConfig(filename='error.log', level=logging.ERROR)
+
 
 #method 1
 app.route('/')
