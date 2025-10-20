@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Outfit Classifier</title>
+</head>
+<body>
+  <h1>Upload an outfit image for classification</h1>
+  <form action="/api/classify_outfit" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept="image/*" required>
+      <input type="submit" value="Classify Outfit">
+  </form>
+</body>
+</html>

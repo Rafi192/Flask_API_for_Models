@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import os
 from ultralytics import YOLO
 
@@ -39,6 +39,7 @@ def classify_outfit():
 
     # Return result to browser
     return f"<h2>Predicted outfit: {top_class}</h2>"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
