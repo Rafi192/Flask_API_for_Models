@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 import torch
 from ultralytics import YOLO
 import os
+import io
 
 # Initialize Flask app
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'))
@@ -18,7 +19,7 @@ def home():
     return render_template('upload.html')  # Simple HTML upload form
 
 
-@app.route('/api/classify_outfit', methods=['POST'])
+@app.route('/api/classify_outfit', methods=['GET','POST'])
 def classify_outfit():
     try:
         if 'file' not in request.files:
@@ -33,7 +34,6 @@ def classify_outfit():
         # Run YOLO classification inference
         results = model(file_path)
 
-        # ✅ For classification model:
         probs = results[0].probs  # class probabilities
         if probs is None:
             return jsonify({"error": "Model did not return classification probabilities"}), 500
