@@ -14,7 +14,6 @@ print("Model loaded successfully.", model_path)
 print("Model details:", model)
 
 @app.route('/api/classify_outfit', methods=['GET','POST'])
-
 def classify_outfit():
     if 'image' not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
