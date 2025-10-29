@@ -8,16 +8,10 @@ import io
 app = Flask(__name__)
 
 # Load TFLite model
-MODEL_PATH = r"C:\Users\hasan\Rafi_SAA\Mobile_app_Cvindal1\PROJECT_CVINDAL1\skin_tone_detection\opt_model.tflite"
+MODEL_PATH = r"C:\Users\hasan\Rafi_SAA\Mobile_app_Cvindal1\PROJECT_CVINDAL1\skin_tone_detection\tf_12_epoch_model_one.keras"
 
-# Initialize TFLite interpreter
-interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
-interpreter.allocate_tensors()
-
-# Get input and output details
-input_details = interpreter.get_input_details()
-output_details = interpreter.get_output_details()
-
+model = tf.keras.models.load_model(MODEL_PATH)
+print("---------Keras model loaded successfully---------------")
 
 CLASS_LABELS = ['0', '1', '2', '3'] 
 
@@ -35,8 +29,7 @@ def preprocess_image(image_bytes):
         img = img.resize((224, 224))
         
         # Convert to numpy array and normalize
-        img_array = np.array(img, dtype=np.float32) 
-
+        img_array = np.array(img, dtype=np.float32)
         
         # Add batch dimension
         img_array = np.expand_dims(img_array, axis=0)
@@ -46,24 +39,20 @@ def preprocess_image(image_bytes):
         raise ValueError(f"Error preprocessing image: {str(e)}")
 
 def predict(image_array):
-    """Run inference on preprocessed image"""
-    # Set input tensor
-    interpreter.set_tensor(input_details[0]['index'], image_array)
+    """Run inference using Keras model"""
+
+    output = model.predict(image_array)
     
-    # Run inference
-    interpreter.invoke()
+    probabilities = output[0]
+    print("Model raw output:", output[0])
+    print("Sum of probabilities:", np.sum(output[0]))
     
-    # Get output tensor
-    output = interpreter.get_tensor(output_details[0]['index'])
-    
-    # Apply softmax to get probabilities
-    probabilities = tf.nn.softmax(output[0]).numpy()
-    
-    # Get predicted class
+    # Determine predicted class
     predicted_class = np.argmax(probabilities)
     confidence = float(probabilities[predicted_class])
     
     return predicted_class, confidence, probabilities
+
 
 @app.route('/')
 def home():
